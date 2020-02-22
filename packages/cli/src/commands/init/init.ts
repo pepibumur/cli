@@ -4,8 +4,7 @@ import fs from 'fs-extra';
 import minimist from 'minimist';
 import ora from 'ora';
 import semver from 'semver';
-// @ts-ignore untyped
-import inquirer from 'inquirer';
+import enquirer from 'enquirer';
 import mkdirp from 'mkdirp';
 import {validateProjectName} from './validate';
 import DirectoryAlreadyExistsError from './errors/DirectoryAlreadyExistsError';
@@ -49,12 +48,11 @@ function doesDirectoryExist(dir: string) {
 async function setProjectDirectory(directory: string) {
   const directoryExists = doesDirectoryExist(directory);
   if (directoryExists) {
-    const {shouldReplaceprojectDirectory} = await inquirer.prompt([
+    const {shouldReplaceprojectDirectory} = await enquirer.prompt([
       {
         type: 'confirm',
         name: 'shouldReplaceprojectDirectory',
         message: `Directory "${directory}" already exists, do you want to replace it?`,
-        default: false,
       },
     ]);
 
