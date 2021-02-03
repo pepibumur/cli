@@ -51,6 +51,7 @@ export interface Flags {
   port: number;
   terminal: string;
   jetifier: boolean;
+  metroConfig: string;
 }
 
 type AndroidProject = NonNullable<Config['project']['android']>;
@@ -95,6 +96,7 @@ async function runAndroid(_argv: Array<string>, config: Config, args: Flags) {
           args.port,
           args.terminal,
           config.reactNativePath,
+          args.metroConfig,
         );
       } catch (error) {
         logger.warn(
@@ -238,6 +240,7 @@ function startServerInNewWindow(
   port: number,
   terminal: string,
   reactNativePath: string,
+  metroConfig: string,
 ) {
   /**
    * Set up OS-specific filenames and commands
@@ -254,10 +257,12 @@ function startServerInNewWindow(
   /**
    * Set up the `.packager.(env|bat)` file to ensure the packager starts on the right port.
    */
-  const launchPackagerScript = path.join(
+  const metroConfigPath = path.resolve(metroConfig);
+  const launchPackagerPath = path.join(
     reactNativePath,
     `scripts/${scriptFile}`,
   );
+  const launchPackagerScript = launchPackagerPath.concat(metroConfigPath);
 
   /**
    * Set up the `launchpackager.(command|bat)` file.
@@ -379,6 +384,12 @@ export default {
       name: '--no-jetifier',
       description:
         'Do not run "jetifier" – the AndroidX transition tool. By default it runs before Gradle to ease working with libraries that don\'t support AndroidX yet. See more at: https://www.npmjs.com/package/jetifier.',
+    },
+    {
+      name: '--metroConfig <string>',
+      description:
+        'Specify a custom Metro config path.',
+      default: '',
     },
   ],
 };
