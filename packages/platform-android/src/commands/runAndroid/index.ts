@@ -258,11 +258,12 @@ function startServerInNewWindow(
    * Set up the `.packager.(env|bat)` file to ensure the packager starts on the right port.
    */
   const metroConfigPath = path.resolve(metroConfig);
+  const metroConfigOption = `--config ${metroConfigPath}`
   const launchPackagerPath = path.join(
     reactNativePath,
     `scripts/${scriptFile}`,
   );
-  const launchPackagerScript = launchPackagerPath.concat(metroConfigPath);
+  const launchPackagerScript = launchPackagerPath.concat(metroConfigOption);
 
   /**
    * Set up the `launchpackager.(command|bat)` file.
